@@ -7,7 +7,9 @@ namespace WebApplication1.Models
 {
     public class Forecast
     {
-        public DateTime date { get; set; }
+        public string Date { get; set; }
         public string Temperature { get; set; }
+
+        public string Weather { get; set; }
     }
 }

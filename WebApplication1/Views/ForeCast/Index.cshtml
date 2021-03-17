@@ -4,8 +4,48 @@
 }
 
 @{
-    var data = ViewData["Data"];
+    var count = ViewData["count"];
+    var noOfSunnyDays = ViewData["noOfsunnyDays"];
+    var data = ViewData["data"]
+        as List<WebApplication1.Models.Forecast>;
 }
 
-<h2>@data</h2>
+<h1>number of days in Sydney where the temperature > 20 degrees : @count</h1>
+<h1>number of sunny days : @noOfSunnyDays</h1>
+
+<table class="table table-condensed table-hover">
+
+    <tr>
+        <th>
+            Date
+        </th>
+        <th>
+            Max Temperature
+        </th>
+        <th>
+            Weather
+        </th>
+    </tr>
+    @{
+        int i = 0;
+        foreach (var item in @data)
+        {
+        <tr>
+            <td>
+                @item.Date
+            </td>
+            <td>
+                @item.Temperature
+            </td>
+            <td>
+                @item.Weather
+            </td>
+        </tr>
+
+            i++;
+        }
+    }
+</table>
+
+
 

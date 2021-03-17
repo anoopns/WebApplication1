@@ -76,4 +76,3 @@ C:\Users\asinkaran\source\repos\WebApplication1\WebApplication1\obj\Debug\WebApp
 C:\Users\asinkaran\source\repos\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csproj.CopyComplete
 C:\Users\asinkaran\source\repos\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 C:\Users\asinkaran\source\repos\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
-C:\Users\asinkaran\source\repos\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache

@@ -10,25 +10,30 @@ namespace WebApplication1.Models
 {
     public class ForecastBusinessLayer
     {
-        private string _city;
-        private string _countyCode;
-        private string _url = ConfigurationManager.AppSettings["URL"];
-        private string _cnt = ConfigurationManager.AppSettings["cnt"];
-        private string _appId = ConfigurationManager.AppSettings["APPID"];
-        public ForecastBusinessLayer(string city, string countryCode)
+        private string _lat;
+        private string _lon;
+        private string _units;
+        private string _url; 
+        private string _exclude; 
+        private string _appId; 
+        public ForecastBusinessLayer()
         {
-            this._city = city;
-            this._countyCode = countryCode;
+           _lat = ConfigurationManager.AppSettings["lat"];
+           _lon = ConfigurationManager.AppSettings["lon"];
+           _url = ConfigurationManager.AppSettings["URL"];
+           _exclude = ConfigurationManager.AppSettings["exclude"];
+           _appId = ConfigurationManager.AppSettings["APPID"];
+            _units = ConfigurationManager.AppSettings["units"];
         }
 
-        public Object GetWeatherForecast()
+        public List<Forecast> GetWeatherForecast()
         {
-            Object forecastData = new object();
+
             using (var client = new HttpClient())
             {
 
                 UriBuilder builder = new UriBuilder(_url);
-                builder.Query = $"q={_city},{_countyCode}&cnt={_cnt}&APPID={_appId}";
+                builder.Query = $"units={_units}&lat={_lat}&lon={_lon}&exclude={_exclude}&APPID={_appId}";
                 var response = client.GetAsync(builder.Uri);
                 response.Wait();
                 var result = response.Result;
@@ -37,17 +42,39 @@ namespace WebApplication1.Models
                     var readTask = result.Content.ReadAsStringAsync();
                     readTask.Wait();
                     dynamic data = JObject.Parse(readTask.Result);
-                    forecastData = data.list[0];
+                    var forecastData = (IEnumerable<Object>)data.daily;
+                    List<Forecast> processedData = new List<Forecast>();
+                    foreach(var item in data.daily)
+                    {
+                        if((double)item.temp.max > 10.00)
+                        {
+                            Forecast fc = new Forecast()
+                            {
+                                Date = UnixTimeStampToDateTime((double)item.dt).ToString("ddd d MMM"),
+                                Temperature = item.temp.max,
+                                Weather = item.weather[0].description
+                            };
+                            processedData.Add(fc);
+                        }
+
+                    }
+                    return processedData;
                 }
                 else
                 {
-
+                    return null;
                 }
             }
 
-            return forecastData;
         }
 
-
+        //Copied UnixTimeStampToDateTime from Stackoverflow https://stackoverflow.com/questions/249760/how-can-i-convert-a-unix-timestamp-to-datetime-and-vice-versa
+        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dtDateTime;
+        }
     }
 }
