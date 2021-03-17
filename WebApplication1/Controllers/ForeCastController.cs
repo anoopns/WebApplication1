@@ -12,7 +12,6 @@ namespace WebApplication1.Controllers
         // GET: ForeCast
         public ActionResult Index()
         {
-            //City & country code are hardcoded, this can be moved to config file and put a logic here to select depending on what user has added in the url 
             ForecastBusinessLayer foreCst = new ForecastBusinessLayer();
             List<Forecast> forecastData = foreCst.GetWeatherForecast();
             ViewData["count"] = forecastData.Count;

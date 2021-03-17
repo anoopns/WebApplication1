@@ -22,7 +22,7 @@ namespace WebApplication1
             routes.MapRoute(
                 name: "Forecast",
                 url: "{controller}/{action}",
-                defaults: new { controller = "Forecast", action = "Index", city = UrlParameter.Optional }
+                defaults: new { controller = "ForeCast", action = "Index", city = UrlParameter.Optional }
             );
         }
     }

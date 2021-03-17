@@ -28,7 +28,6 @@ namespace WebApplication1.Models
 
         public List<Forecast> GetWeatherForecast()
         {
-
             using (var client = new HttpClient())
             {
 
